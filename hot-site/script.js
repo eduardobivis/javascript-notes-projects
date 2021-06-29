@@ -47,7 +47,7 @@ const hoverEffect = function( event ) {
     document.querySelectorAll( '.nav__link' ).forEach( 
       element => ( event.target !== element ) && ( element.style.opacity = this )
     );
-    nav.querySelector( '.nav__logo' ).style.opacity = this;
+    nav.querySelector( '.nav__logo' ).stylewith.opacity = this;
   }
 }
 /* The event is passed as first parameter automatically, the opacity becomes the 'this' element, no more 
@@ -200,10 +200,3 @@ document.querySelector( '.dots' ).addEventListener( 'click', event => {
   activateDot( currentSlide );
   moveSlide();
 })
-
-
-
-
-
-
-
