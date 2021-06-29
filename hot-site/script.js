@@ -31,7 +31,7 @@ btnCloseModal.addEventListener( 'click', closeModal );
 overlay.addEventListener( 'click', closeModal );
 
 //Close modal when pressing Esc
-document.addEventListener( 'keydown', function (e) {
+document.addEventListener( 'keydown', function ( e ) {
   if ( e.key === 'Escape' && !modal.classList.contains( 'hidden' ) ) {
     closeModal();
   }
@@ -94,7 +94,7 @@ operationsContainer.addEventListener( 'click', event => {
 
 const navDimensions = nav.getBoundingClientRect();
 new IntersectionObserver(
-  entries =>  ( !entries[0].isIntersecting ) ? nav.classList.add( 'sticky' ) : nav.classList.remove( 'sticky' ), 
+  entries =>  ( !entries[ 0 ].isIntersecting ) ? nav.classList.add( 'sticky' ) : nav.classList.remove( 'sticky' ), 
   {
     root: null, 
     threshold: 0, 
@@ -154,14 +154,14 @@ slides.forEach( ( _, index ) =>
 );
 
 //Activates a Dot
-const activateDot = function (slide) {
+const activateDot = function ( slide ) {
   document
-    .querySelectorAll('.dots__dot')
-    .forEach(dot => dot.classList.remove('dots__dot--active'));
+    .querySelectorAll( '.dots__dot' )
+    .forEach(dot => dot.classList.remove( 'dots__dot--active' ) );
 
   document
-    .querySelector(`.dots__dot[data-slide="${slide}"]`)
-    .classList.add('dots__dot--active');
+    .querySelector(`.dots__dot[data-slide="${ slide }"]`)
+    .classList.add( 'dots__dot--active' );
 };
 
 //Moving Slides
