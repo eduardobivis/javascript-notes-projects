@@ -200,10 +200,3 @@ document.querySelector( '.dots' ).addEventListener( 'click', event => {
   activateDot( currentSlide );
   moveSlide();
 })
-
-
-
-
-
-
-
