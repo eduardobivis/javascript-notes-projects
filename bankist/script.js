@@ -99,7 +99,7 @@ const createMovementDate = ( date, locale ) => {
     else if( difference <= 2) return 'Yesterday';
     else if ( difference <= 7 ) return `${ Math.round( difference ) } days ago`;
     else  return new Intl.DateTimeFormat( locale ).format( date );
-} 
+};
 
 //Formats Date with Internationalization
 const createLabelDate = ( date, locale ) => { 
@@ -114,7 +114,7 @@ const createLabelDate = ( date, locale ) => {
       minute: 'numeric'
     } 
   ).format( date );
-}
+};
 
 //Formats Money/Currency with Internationalization
 const getNumberFormatter = account => 
@@ -210,13 +210,13 @@ const startLogOutTimer = timer => {
   let time = 300;
   tick();
   return setInterval( tick, 1000 );
-}
+};
 
 //Reset the Timer
 const resetTimer = timer => {
   if( timer ) clearInterval( timer ); 
   timer = startLogOutTimer(); 
-}
+};
 
 ///////////////////////////////////////
 // Event handlers
