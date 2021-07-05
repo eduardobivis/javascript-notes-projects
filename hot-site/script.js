@@ -49,7 +49,7 @@ const hoverEffect = function( event ) {
     );
     nav.querySelector( '.nav__logo' ).stylewith.opacity = this;
   }
-}
+};
 /* The event is passed as first parameter automatically, the opacity becomes the 'this' element, no more 
 paramaters can be passed - its a 'hack' */
 nav.addEventListener( 'mouseover', hoverEffect.bind( 0.5 ) ); 
@@ -87,7 +87,7 @@ operationsContainer.addEventListener( 'click', event => {
       .querySelector( `.operations__content--${ event.target.dataset.tab }` )
       .classList.add( 'operations__content--active' );
   }
-})
+});
 
 ///////////////////////////////////////
 // Menu Always on Top ( Observer )
@@ -175,14 +175,14 @@ const moveRight = () => {
   else currentSlide++;
   activateDot( currentSlide );
   moveSlide();
-}
+};
 
 const moveLeft = () => {
   if ( currentSlide === 0 ) currentSlide = slides.length - 1;
   else currentSlide--;
   activateDot( currentSlide );
   moveSlide();
-}
+};
 
 //Arrows
 document.querySelector( '.slider__btn--right' ).addEventListener( 'click', () => moveRight() )
@@ -199,4 +199,4 @@ document.querySelector( '.dots' ).addEventListener( 'click', event => {
   currentSlide = Number( event.target.dataset.slide );
   activateDot( currentSlide );
   moveSlide();
-})
+});
