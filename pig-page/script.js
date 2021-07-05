@@ -9,7 +9,7 @@ for( let i = 0; i < totalPlayers; i++ ) {
         score: document.getElementById( `score--${ i }` ),
         currentScore: document.getElementById( `current--${ i }` )
     }
-}
+};
 
 //Dice and Buttons
 let dice = document.querySelector( '.dice' );
@@ -66,7 +66,7 @@ function init(){
     diceNumber = 0;
     currentScore = 0;
     score = [ 0, 0 ];
-}
+};
 function reset() {
 
     //Inits State and Clears Layout
@@ -76,15 +76,15 @@ function reset() {
         players[ i ].currentScore.textContent = String( currentScore );
         players[ i ].container.classList.remove( 'player--winner' );
     }
-}
+};
 function setCurrentScore() {
     currentScore = ( diceNumber === 1 ) ? 0 : currentScore + diceNumber;
     players[ activePlayer ].currentScore.textContent = String( currentScore );
-}
+};
 function setScore(){
     score[ activePlayer ] = score[ activePlayer ] + currentScore;
     players[ activePlayer ].score.textContent = String( score[ activePlayer ] );
-}
+};
 function switchTurn() {
 
     //Clear Current Score
@@ -98,7 +98,4 @@ function switchTurn() {
         if( i === activePlayer ) players[ i ].container.classList.add( 'player--active' );
         else players[ i ].container.classList.remove( 'player--active' );
     }
-}
-
-
-
+};
