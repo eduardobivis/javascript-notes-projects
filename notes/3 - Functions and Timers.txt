@@ -1,0 +1,177 @@
+#############
+# Functions #
+#############
+
+Functions are a special type of objects. 
+It has properties as 'name' and functions as 'call', 'apply' and 'bind'.
+
+Function Declaration:
+
+    function functionName() {} 
+
+Function Expression / Anonimous Function 
+
+    const functionName = function (){}
+
+    Function is a Value.
+    Needs to be declared before its used.
+    The 'this' has as default undefined, but can be assigned by the 'bind' method
+
+Arrow Function 
+
+    1 parameter and return inplicit
+    const funcionVar = functionParameter => 2037 - functionParameter;
+
+    more than 1 parameter and return explicit
+    const funcionVar = ( functionParameter1, functionParameter2 ) => { ... return ...; }
+
+    Breakline or returning objects, used in React/Vue Components
+    const funcionVar = functionParameter => ( 
+        { name: Eduardo, age: 28 } 
+    ); 
+
+    Arrow Functions don't have their own this, instead they use the this of the surrounding 
+    function / code block (lexical this). 
+    As methods of objects the this values the Window global object (NEVER USE IT !!)
+
+
+Instant Initialization Function Expression (IIFE):
+
+    Function Declaration
+    (function functionName(){}(functionParameter1, functionParameter2))()
+
+    Function Expression / Anonimous Function 
+    (function (){}(functionParameter1, functionParameter2))()
+
+Callback Function:
+    
+    function functionName( functionParameter1, functionParameter2, callbackFunction ) {
+        ...
+        callbackFunction( a + b );
+    }
+
+Functions Returning Functions
+
+    var functionVar = function ( parameter1 ) {
+        return function ( parameter 2 ) {
+            console.log( parameter1, parameter2 );
+        }
+    }
+    functionVar2 = functionVar( 'parameter1Value' ); functionVar2( 'parameter2Value' );
+    functionVar( 'parameter1Value' )( 'parameter2Value' );  
+
+###################
+# Function 'this' #
+###################
+
+New
+
+    Returns the object 'this' which can be manipulated inside the function
+    new functionName() 
+
+Call and Apply
+
+    Pass the value of 'this' dinamically and parameters
+    functionName.call( valueOfThis, functionParameter1, functionParameter2 );
+    functionName.call( valueOfThis, ...[ functionParameter1, functionParameter2 ] );
+    functionName.apply( valueOfThis, [ functionParameter1, functionParameter2 ] )
+
+Bind
+
+    Returns the function with 'this' and parameters (you can subscribe them later)
+    const funcionVar = function.bind( valueOfThis, functionParameter1, functionParameter2 )
+
+Observations:
+
+    In Events, the 'this' of an Elements points to the DOM Element its attached to
+
+    The 'this' in Object Methods is the Object that is calling it / it's owner, for instance:
+
+        When borrowing methods the owner changes
+        obj1.method1 = obj2.method1; 
+
+        method1 becomes a Expression Funcion and this now values undefined
+        let function  = ob1.method1;
+
+    A commom old trick is to save a 'this' inside a variable to pass it to another context
+
+Examples:
+
+    Object Method as Callback Function
+    document.querySelector('.poll').addEventListener( 'click', poll.registerNewAnswer.bind(poll) );
+    poll.displayResults.call({ answers: [5, 2, 3] }, 'string');
+
+    Call an Object Method passing the 'this' ( New Object )
+    poll.displayResults.call({ answers: [5, 2, 3] }
+
+
+############
+# Closures #
+############
+
+The function keeps the memory of the scope it was created, even if it no longer exists. It allows
+the function to access variables and functions from this scope.
+
+Consoling the Closure of a Function
+
+    console.dir( functionName );
+
+##########
+# Timers #
+##########
+
+setTimeout
+
+    Executes a Callback Function ONCE after a given time
+    const timer = setTimeout( ( parameter1, parameter2 ) => {}, 1000, parameterValue1, parameterValue2 );
+    
+    //Stops the Timer
+    clearTimeOut( timer ); 
+
+setInterval
+
+    Executes a Callback Function PERIODICALLY in a given interval
+    const times = setInterval( ( parameter1, parameter2 ) => {}, 1000, parameterValue1, parameterValue2 );
+
+    //Stops the Interval
+    clearInterval( timer ); 
+
+Observations:
+
+    Timers doesn't stop the code execution
+    Timers can be delayed, since they go to the end of the Callback Queue.
+
+Example:
+
+    [ Counter with Minutes and Seconds ]
+
+    let timer;
+
+    const startLogOutTimer = timer => {
+
+        //Timer Function
+        const tick = () => {
+            const min = String( Math.trunc( time / 60 ) ).padStart( 2, 0 );
+            const sec = String( time % 60 ).padStart( 2, 0 );
+
+            console.log( `${ min }:${ sec }` );
+            if( time === 0 ) clearInterval( timer );
+            time--;
+        }
+
+        //5 minutes
+        let time = 300; 
+
+        //To start on 0 seconds
+        tick(); 
+
+        //Runs the tick() each second
+        return setInterval( tick, 1000 ); 
+    }
+
+    const resetTimer = timer => {
+        if( timer ) clearInterval( timer ); 
+        timer = startLogOutTimer(); 
+    }
+
+    resetTimer();

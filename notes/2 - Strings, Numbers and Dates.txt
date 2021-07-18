@@ -1,0 +1,120 @@
+###########
+# Strings #
+###########
+
+Properties and Methods come from the String object
+
+//Properties
+length -> Gets the length of the String
+
+Methods
+endsWith(), startsWith() -> Returns a boolean checking if the String begins/ends with a character/word
+includes() -> Returns a boolean checking if the String includes a character/word 
+indexOf( 'value' ) -> Returns the first ocurrance of a character/word ( -1 = not found )
+getIndexOf( 'value' ) -> Returns the last ocurrance of a character/word ( -1 = not found )  
+padStart, padEnd( 'desiredSize', ' ' ) -> Fills the String with a given character to reach a desired size
+repeat() //Repeates the string a given amount of times
+replace() -> Replaces the first ocurrance of a character / word
+replaceAll() -> Replaces all the ocurrances of a character / word
+slice( start, length ) -> Returns a portion of a String based on integer positions ( last index is not included )
+split() -> Return an Array 'Exploding' the String based on a character / divider
+toLowerCase() -> Transforms the String to LowerCase
+toUpperCase() -> Transforms the String to Uppercase
+trim(), trimStart(), trimEnd() -> Removes the spaces in the String
+
+//Examples
+
+    //Gets everything after a given character
+    str.slice( str.indexOf( '#' ) ); 
+
+    //Gets the last character of a String ( goes from -1 to the last character )
+    str.slice( -1 ) 
+
+    //Replaces all ocurrances using the method replace and Regex
+    str.replace( /value/g ) 
+
+    //Generic ucFirst
+    str.replace( str[ 0 ], str[ 0 ].toUpperCase ); ]
+
+    //ucFirst
+    str[0].toUpperCase() + str.slice( 1 );
+
+    //Hides Credit Card Number
+    str.slice( -4 ).padStart( String( creditCardNumber.length, '*' ) ); 
+
+    //If the day is smaller than 2 digits adds a Zero before it
+    day.padStart( 2, 0 ); 
+
+###########
+# Numbers #
+###########
+
+All numbers are decimal ( 0.0 ). Since the operation are done in binary it can give you some weird results 
+Ex: 0.1 + 0.2 = 0.30000000004 
+
+//Number Methods
+Number( string ), +string -> Converts a String to a Number
+Number.toInt( string ), str.toInt() -> Converts a String to an Int Number
+Number.toFloat( string ), str.toFloat() -> Converts a String to an Float Number
+Number.isNaN() -> Checks if a Number is NaN
+Number.isFinite() -> Best / Right way of checking if the value is a number
+Number.isInteger() -> Checks if a Number is a Integer
+Number.isFloat() -> Checks if a Number is a Float
+str.toFixed( places ) -> Rounds a string with the rounder/places Number
+
+//Math Methods
+Math.sqrt( 25 ) | 25 ** ( 1/2 ) | 8 ** ( 1/3 ) -> Square and Cubic root
+Math.max( 1, 4, 10 ), Math.min( 1, 4, 10 ) -> Max and min value
+Math.round(), Math.ceil() -> Rounds Up ( Do Type Coercion )
+Math.floor() -> Rounds Down ( Does Type Coercion )
+Math.trunc() -> Removes any decimal Part
+[ floor and trunc as the same behaviour for positive numbers ]
+Math.random() -> Returns a random number between 0 and 1
+
+Ex: Returns a random number between two given numbers
+Math.trunc( Math.random() * ( max - min + 1 ) ) ) + min; 
+
+//Internalization, Formatting
+let options = {
+    style: 'currency',
+    unit: 'celsius',
+    currency: 'EUR', //Adds the Currency Symbol
+    useGrouping: false //Remove separatos for millions
+}
+let formatter = new Intl.NumberTimeFormat( 'en-US', options );
+let formattedNumber = formatter.format( 12321321321 ); 
+[ navigator.language gets the users language ]
+
+########
+# Date #
+########
+
+//Instanciate
+new Date(); //Current time
+new Date( 'Aug 02 2020 18:05:41' ); New Date( 'December 24, 2015' );
+new Date( year, month, day, hours, minutes, seconds ); 2017-10-10 -> new Date( 2017, 10, 10 );
+new Date( '2017-11-19T14:30:03.000Z' ) -> ISO Time Format
+
+//Methods
+now() -> Current Time in Timestamp
+setDate(), .getDate() -> Day ( Horrible Name )
+setDay(), .getDay() -> Day of the Week ( Zero Based )
+setMonth(), .getMonth() -> Zero based
+setFullYear(), .getFullYear() -> Never use .getYear() !!!
+setHours(), .setMinutes(), .setSeconds(), .getHours(), .getMinutes(), .getSeconds() -> Time Methods
+setISOstring(), .getISOString() -> 2017-11-19T14:30:03.000Z // ISO Time Format
+setTime(), .getTime() -> Timestamp, time passed since Epoch ( 1/1/1970 ) // new Date( dt.getTime() );
+
+//Internalization, Formatting
+let options = {
+    hour: 'numeric',
+    minutes: 'numeric',
+    day: 'numeric',
+    month: 'numeric', //long -> string, 2-digits -> zero before month ( Not Zero Based )
+    year: 'numeric'
+};
+[ The default options array is day, minutes and year ]
+
+let formatter = new Intl.DateTimeFormat( 'en-US', options );
+let formattedDate = formatter.format( new Date() ); //navigator.language gets the users language
+[ navigator.language gets the users language ]

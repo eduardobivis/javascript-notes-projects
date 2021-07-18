@@ -1,0 +1,172 @@
+##########
+# Module #
+##########
+
+Import
+
+    <script type="module" defer src="script.js"></script>
+
+Structure
+
+    Imports - Runs asyncronously before the execution of the main script
+
+        Import
+        import { exportedVariable1, exportedVariable2 } from '.anotherModule.js';
+
+        Aliased Import
+        import { exportedVariable as aliasedVariable } from '.anotherModule.js';
+
+        Object with all Exported Variables
+        import * as sampleObject from '.anotherModule.js';
+        sampleObject.sampleFunction();
+
+        Importing an Export Default, you can give any name you want
+        import anyName from '.anotherModule.js'
+
+        Mixing Export and Export Default ( Never do this ! )
+        import exportedDefaultVariale, { exportedVariale } from '.anotherModule.js'
+
+        [ Imports are LINKS to the exported variables / values, not copies ]
+
+    Exports - Variables are private, to make them public you need to export them
+
+        Exporting Variables
+        export const sampleVariable = 1;
+        export const sampleFunction = function () { ... }
+
+        Exporting many Variables in one sentence
+        export { sampleVariable, sampleFunction }
+
+        Exporting a Value ( Most recommended way )
+        export default function () { ... }
+
+        [ Do not mix export and export default ]
+
+###########
+# Old Way #
+###########
+
+const obj = function () {
+
+    const sampleVariable1;
+    const sampleVariable2;
+    const sampleFunction = function () { return sampleVariable1 + sampleVariable2; }
+
+    return {
+        sampleVariable1,
+        sampleFunction
+    }
+}();
+
+[ Uses Closures to access the variable from its original context ]
+[ All modules need to be called on the HTML, are global scoped and can't be bundled ]
+
+#########################
+# Common JS ( Node JS ) #
+#########################
+
+Import
+const { sampleVariable } = require( 'anotherModule.js' );
+
+Export
+export.sampleVariable = functin () { ... }
+
+##########
+# Parcel #
+##########
+
+Installing
+
+    Globally
+    npm install -g parcel
+
+    Locally
+    npm install parcel --save-dev
+
+Running
+
+    [ npx is the npm package runner that is part of the npm package ]
+
+    Merge all files in a single readable file
+    npx parcel index.html
+    
+    Compress all files in a unreadable file ( bundle )
+    npx parcel build index.html
+
+    [ parcel compressed and uglyfies all files in a bundle. It also uses babel to convert it to ES5
+    code for compatibility in older browsers. ]
+
+    for ES6 elements that are not convertible as spread, rest, etc use the library core-js
+    import "core-js/stable";
+    import "core-js/stable/array/find.js";
+
+    to polyfill async functions use regenerator-runtime
+    import "regenerator-runtime/runtime";
+
+    Locally script
+    "script": {
+        "start": "parcel index.html",
+        "build": "parcel build index.html"
+    },
+
+
+When using a module blunder there is no reason to specify the whole path to the file
+
+    import { exportedVariable1, exportedVariable2 } from '.anotherModule.js';
+
+Hot Module - Turns on Reactivity
+
+    if (module.hot) {
+        module.hot.accept()
+    }
+
+##########################
+# Functional Programming #
+##########################
+
+The state is Immutable
+Functions are pure, they don't depend on or mutate any external value
+Always use template literals
+
+Solving prolems in a functional way:
+
+Declarative way:
+let output = '';
+for ( const entry of budget )
+    output += entry.value < limit ? `${ entry.description.slice( -2 ) }/` : '';
+
+Functional Way
+const output = budget
+                .filter( entry => entry.value < limit )
+                .map( entry => entry.description.slice( -2 ) )
+                .join( ' / ' );
+
+
+################
+# Immutability #
+################
+
+Only the First Level
+cont obj = Object.freeze( { ... } );
+
+Custom Deep Freeze ( Recursive )
+const deepFreeze = obj => {
+  Object.keys( obj ).forEach( prop => {
+    if ( typeof obj[ prop ] === 'object' ) deepFreeze( obj[ prop ] );
+  });
+  return Object.freeze( obj );
+};
+
+Returning a new state
+return ( condition ) ? [ ...state, newdata ] : state;
+
+############################
+# Reactivity / Virtual DOM #
+############################
+
+Creates a Virtual DOM, compares with the Current DOM and only changes what is different
+
+const virtualDOM = document.createRange().createContextualFragment( newContent );
+const newElements = newDOM.querySelectorAll( '*' );       
+const currentElements = this._parentElement.querySelectorAll( '*' );
+[ ... compare and changes what is different ... ]

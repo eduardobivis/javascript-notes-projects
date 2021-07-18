@@ -1,0 +1,188 @@
+####################
+# Document Methods #
+####################
+
+NodeList -> Doesn't Update when the DOM changes
+HTMLCollection -> Updates when the DOM changes 
+
+[ document.method ]
+
+documentElement -> Gets the whole HTML Element
+
+head / document.body -> Gets the head / body Element
+
+querySelector( '.element' ) -> Selects a DOM element, gets only the first element
+
+querySelectorAll( '.element' ) -> Selects a DOM element, gets all elements
+
+getElementsByTagName( 'button' ) -> Selects all the Elements of a given Type / Tag, 
+
+getElementById( 'element' ) -> Selects the Element by ID
+
+getElementByClassName( 'class' ) -> Selects the Element by Class returns a HTMLCollection
+
+###################
+# Element Methods #
+###################
+
+.document.createElement( 'div' ) -> Creates a DOM Element
+
+.insertAdjacentHTML( 'position', html' ) -> appends a content ( string ) to the element 
+    ( Available Positions: beforeBegin, afterBegin, beforeEnd, afterEnd )
+
+.insertAdjacentElement( 'position', element ) -> appends a content to the element 
+
+.remove() -> Deletes a DOM Element ( In the past the only method available was .removeChild() )
+
+.prepend( element2 ) -> Prepends a DOm Element inside another DOM Element
+
+.append( element2.clone( true ) ) -> Appends a Dom Element inside another DOM Element
+
+.before( element2 ) -> Inserts a DOM Element before another DOM Element
+
+.after( element2 ) -> Inserts a DOM Element after another DOM Element
+    * if you use both, it moves the element to the last position required, it doesn't duplicate it 
+    * to place it in many places you need to clone it / true -> All child elements will be copied
+
+.getBoudingClientRect() -> Get the position and dimensions of the "rectangle" containing the Element
+
+.scrollIntoView({ behaviour: 'smooth' }) -> Scrolls to a specific Element (New Way)
+
+//Traversing
+.querySelector( 'element' ) -> Searches for an Element inside another Element ( Only first children )
+
+.remove() -> Removes the Element
+
+.childrenNodes, .children -> Returns all Nodes / Elements inside another Element ( Only first children )
+
+.parentNode, .parentElement -> Returns the Parent Node / Element of another Element ( First Parent )
+
+.previousSibling, .previousElementSibling -> Returns the Previous Node / Element of an Element
+
+.nextSibling, .nextElementSibling -> Returns the Next Node / Element of an Element
+
+.closest( 'element' ) -> Returns the closest Parent Element to the Element with a given class / id
+
+
+#############################
+# Document / Element Styles #
+#############################
+
+[ element.style.propertyName ] Gets / Sets a given style property from the element.  
+It only works with Inline style. 
+To get a style that is specified in the CSS Sheet use [ getComputedStyle( element ).propertyName ].
+The method [ getComputedStyle( element ) ] alone will return an object with all the properties of an
+element.
+You can also change CSS Variables value using the method below: 
+[ document.documentElement.style.setProperty( '--var-name', 'value' ) ]
+
+######################
+# Element Attributes #
+######################
+
+[ element.attribute ]
+
+textContent -> Gets / Sets the content of the element as textContent
+
+innerHtml -> Gets / Sets the content of the element including the HTML tags
+
+value -> Gets the value of a input element
+
+href, .src, .className .... ( Google to find the one you need ! )
+
+getAttribute( 'attributeName' ), .setAttribute( 'attributeName' ) -> Works with custom Attributes as well !!!
+[ properties will return absolut URLs, if you need the relative one use getAttribute() ]
+
+dataset.attributeName ( data-attribute-name ) -> Gets / Sets an data attribute
+
+###################
+# Element Classes #
+###################
+
+.classList.add( 'class1', 'class2' ) -> Adds a Class 
+.classList.toggle( 'class1', 'class2' ) -> Toggles a Class
+.classList.contains( 'class' ) -> Check if the Element has a given class ( Returns a Boolean )
+.classList.remove( 'class1', 'class2' ) -> Removes a Class (name without the dot !)
+.className = 'class' -> DON'T use it, overwrites all the classes / only allows you to put 1 class in the element
+
+##########
+# Events #
+########## 
+
+Old way
+
+    element.click = function(){}; //
+
+New Way
+
+    let fn = element.addEventListener( 'event', function(){{}} ); 
+    element.removeEventListener( 'event', fn );
+
+event.preventDefault() -> Prevents the Default behaviour of an Dom Element
+
+event.target -> gets the DOM Element that triggered the Event
+
+event.currentTarget -> gets the DOM Element where the event is happen ( Bubbling ) 
+
+e.stopPropagation -> Stops the Bubbling Propagation of the Event to the parent Elements
+
+Event Delegation
+
+    Putting a function on a Commom parent and then selecting which element triggered this during the 
+    Bubble Fase (From Child to Parent ) using event.target, this way you avoid repeating the function 
+    for each element !!!
+    To capture an event in the Capture fase ( From Parent to Child ) use the last parameter as true
+    document.addEventListener( 'event', function ( event ){}, true );
+
+
+############
+# Observer #
+############
+
+The observer observes when the 'target' element intersects a 'threshold' percentage of the 'root' element
+
+//Function executed by the observer everytime the target intersects the root
+//Entries -> array of thresholds / Observer -> the observer object
+
+    const observerFunction = ( entries, observer ) => { 
+        const [ entry ] = entries;
+        if( entry.isIntersecting ) {
+            ...
+            observer.unobserve( entry.target ); //Stops the Observation for the current target
+        }
+    }
+
+Object of Options, Root Element and an Array of Thresholds
+
+    const observerOptions = {
+        root: null, //when null 'root' values the Viewport element
+        threshold: 0.15 //only 1 threshold passed
+        rootMargin: (-)10px; 
+
+        [ Increases the area before / after the target so the intersection 
+            happens before / after ( only px allowed!! ) ]
+    }
+
+Observer declaration, passing the function and the options
+
+    const observer = new IntersectionObserver( observerFunction, observerOptions );
+
+Sets the observer to observes an element
+
+    sections.forEach( section => sectionObserver.observe( section ) );
+
+[ an initial intersection always happens when the page is loaded ]
+
+#######################
+# DOM Lifecycle Event #
+#######################
+
+'DOMContentLoaded' -> fires when HTML and Javascript is loaded, does not wait for images or other 
+external resources when the javascript is in the end of the file theres no need to listen to this event.
+It's equivalent to document.ready in JQuery
+
+'load' -> fires when the complete page has finished loaded
+
+'beforeunload' -> fires when the window is closed, in some browsers you need to call event.preventDefault();
+To set a confirmation alert, set e.returnValue = ''; ( historical reasons ). 
+Its no longer possible to customize the alert message.

@@ -1,0 +1,60 @@
+########
+# Sets #
+########
+
+A collection of unique elements. 
+It won't store any duplicate value. 
+You can't retrieve data from a Set.
+It will remove any duplicate from the array
+let setName = new Set( [ 1, 2, 2, 3, 4 ] );
+
+Methods
+
+    set( 'key', 'value' ) -> Adds or Updates a value in the Map
+    has('value') -> Check if the set contains a given value
+    add('value') -> Adds a given value to the set
+    delete('value') -> Deletes a given value from the set
+    clear() -> Clears all data from the set
+    size() -> Returns the size of the set
+
+Examples: 
+
+    //Getting unique values of an array using Set
+    const arrayName = [ ...setName ( arrayName ) ]; 
+
+########
+# Maps #
+########
+
+A collection of key => value. The key can be a string, a number or a boolean.
+To use objects as map keys you need to store it in a variable and use the variable as
+the key, so they will point to the same Address in the Heap (Memory)
+let mapName = new Map( [ [ 'key1', 'value1' ], [ 'key2', 'value2' ] ] );
+
+Properties
+
+    size -> Gets the size of the map
+
+Methods
+
+    set( 'key', 'value' ) -> Adds a value to the Map and returns the Map
+    get( 'key' ) -> Gets a value by Key
+    has( 'key' ) -> Check if the Map contains a given value by Key
+    delete( 'key' ) -> Deletes a given value from the Map by Key
+    keys() -> Gets an MapIterator with the Keys of the Map
+    values() -> Gets an MapIterator with the Values of the Map
+    entries() -> Gets an MapIterator with the Key => Values of the Map
+
+Examples:
+
+    Converts the MapIterator to an Array using the Spread Operator
+    dataArray = ...dataMap.entries();
+
+    Boolean as Key
+    map.get( time > map.get( 'open' ) && time < map.get( 'closed' ) ); 
+
+    Setting a HTML Element
+    mapName.set( 'Header', document.querySelector( 'h1' ) );
+
+    Converting Object to Map
+    new Map( Object.entries( objName ) );

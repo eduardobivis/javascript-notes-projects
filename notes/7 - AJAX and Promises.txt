@@ -1,0 +1,192 @@
+########
+# AJAX #
+########
+
+A callback Function is registered on WEB API's Environment 
+When the Event is fired off, the Function goes to the Callback Queue
+Then, when the Call Stack is empty ( No code running ), the Event Loop runs the Function in the Call Stack
+However, Promises have their own queue called Microtasks Queue, which has priority over the Callback Queue
+
+1º - console.log('Start'); 
+4º - setTimeout(() => ... , 0); //Will be delayed due lack of priority
+3º - Promise.resolve('Resolved promise 1').then( ...takes 5 seconds... );
+2º - console.log('End'); 
+
+###########
+# Old Way #
+###########
+
+const request = new XHLHttpRequest();
+request.open( 'GET', 'url' );
+request.send();
+request.addEventListener( 'load', function() { const [ data ] = JSON.parse( this.responseText ); } );
+
+###########
+# Promise #
+###########
+
+Declaration
+
+    const callPromise = new Promise( 
+
+        //functions as parameters
+        function( resolve, reject ) { 
+            
+            Marks the Promise as fullfilled, returning the result data that will be consumed by the 
+            then method
+            resolve( ...result...) 
+            
+            Marks the Promise as rejected, passing an error that will be handled by the catch method
+            reject( new Error( 'Error Message' ))
+
+        }
+    )
+
+Consuming a Promise
+
+    Hits an Endpoint
+    callPromise.fetch( 'url' )
+
+    The then method always returns a Promise 
+    .then( 
+        data => { ...Handles the Data... },
+        err => { throw new Error( 'Custom Error Message' ) } //Reject all Remaining Chains
+    )
+
+    Handles any error Thrown
+    .catch( err => customRnderErrorFn( err ))
+
+    Executes in the end and is always called
+    .finally( () => { ... } ) 
+    
+Fetch Method
+    
+    Get
+    fetch( 'url' )
+    
+    Post
+    fetch( 'url', {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: {
+            JSON.stringfy( data )
+        }
+    })    
+
+Fetch Method and Chaining Promises ( Flat Chain )
+
+    const callPromises = function () { 
+
+        //Sends a Request to an Endpoint
+        fetch( 'url' )
+            
+            .then( response => response.json () ) //json() always need to be called
+            .then( response => { 
+
+                //Data ready to be manipulated
+                if( !reponse.ok ) throw new Error( `custom message - ${ response.status }` );
+                return fetch ( response.anotherUrl ) 
+            }) 
+            .then() ...
+    }
+
+    Refactoring...
+
+    const getJSON = function (url, errorMsg = 'Something went wrong') {
+    return fetch(url).then(response => {
+        if (!response.ok) throw new Error(`${errorMsg} (${response.status})`);
+        return response.json();
+    });
+    };
+    const promise = function() {
+        getJSON( 'url' , 'Custom Error Message' )
+            .then( data => { return getJSON( data.anotherUrl, 'Custom Error Message' ) } )
+            .then ( data => { ... } ) ...
+    }
+
+Promisify Callback Based API - Geolocation
+
+    const getPos = () => 
+        new Promise( 
+            ( resolve, reject ) => navigator.geolocation.getCurrentPosition( resolve, reject ) 
+        );
+    getPosition().then( pos => { ... } );
+
+Resolving or Rejecting Instantly
+
+    Promise.resolve( 'abc' ).then( x => console.log(x) );
+    Promise.reject( new Error( 'Problem!' ) ).catch( x => console.error( x ) );
+
+#################
+# Async / Await #
+#################
+
+Keeps running in the background while performing the code that is inside it ( Thread )
+When its done, it automatically returns a Promise
+Await stops the execution inside the Thread
+It's a Sugar Syntax over the 'then' method
+
+    const functionName = async function ( country ) {
+
+        try{
+
+            With Promise
+            const result await new Promise( resolve, reject ) { ... }
+
+            With Fetch
+            const result = await fetch( 'url' );
+
+            Throwing Custom Erro
+            if( !res.ok ) throw new Error( 'Custom Message' );
+
+            You still need to call json()
+            const data = result.json();
+
+            return data;
+        }
+        
+        Handling Errors
+        catch ( error ) { 
+            throw err; 
+        }
+
+    }
+
+    Getting the Result
+    functionName()
+        .then( data => { ... } )
+        .catch( err => { ... } )
+        .finally( () => { ... } );
+    OR
+    ( async function() {
+        try { const data = await functionName(); }
+        catch ( err ) { ... }
+        Finally code...
+    })();
+
+Paralel Combinators
+
+    const functionName = async function() {
+        try{
+
+            All - Running in Paralel, Shortcircuits when any of the Promises is rejected
+            const data = Promise.all([ anyFunction(), anyFunction() ]);
+
+            Race - The one that ends First is returned
+            const data = Promise.race([ anyFunction(), anyFunction() ]);
+
+            All Settled - Returns the result of all Promises, even if any was rejected
+            const data = Promise.allSettled([ anyFunction(), anyFunction() ]);
+
+            Any ( ES2021 ) - Return the result of the first fulfilled Promise
+            const data = Promise.allSettled([ anyFunction(), anyFunction() ]);
+
+        }
+        catch ( err ) => { ... }    
+    }
+
+
+
+

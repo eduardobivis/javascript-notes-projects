@@ -1,0 +1,307 @@
+###############
+# Destruction #
+###############
+
+Breaks the Array / Object into Variables
+
+Arrays 
+
+    Nested Arrays
+    const[ var1, , [ var3 ], var4 = 'defaultValue' ] = [ var1, var2, [ var3 ] ];
+
+    When variables already exist
+    [ var1, var2 ] = [ var1, var2 ];
+
+    Switching Variables Values
+    [ var1, var2 ] = [ var2, var1 ];
+
+    Receiving 2 variables as return
+    [ var1, var2 ] = functionName();
+
+Objects
+
+    const { 
+
+        Attribute name != Variable Name
+        attribute1: var1,
+
+        Nested Object
+        nestedObjectName: { attribute2 }, 
+
+        Default Value
+        attribute3 = 'defaultValue'
+
+    } = objName;
+
+    When variables already exist
+    { attribute1, attribute2 } = objName;
+
+    Desctruction in a function parameter
+    functionName( { parameter1, parameter2 } ){}; 
+
+#########
+# Loops #
+#########
+
+Iterables: Types of Element that can be Looped: array, string, maps and sets
+
+Breaking a Loop
+
+    continue -> Goes to the next index without executing the following code
+    break -> Completely terminates the whole loop and skips to the following
+
+For Of ( Works with Continue and Break )
+
+    Arrays
+    for( var currentValue of valuesArray ) {}
+    for( var [ key, value ] of valuesArray.entries() ) {} // Using Destruction
+
+    Objects
+    for (const [ key, { val1, val2 } ] of Object.entries( objName ) ) {}  // Using Destruction
+
+For Each ( Doesn't work with Continue and Break )
+
+    arrayName.forEach( 
+        function( element, index, entireArray ){} //Callback Function
+    ); 
+
+    [ Works with Maps and Sets. In Sets Key = Value cause Sets have no Index ]
+
+
+##########
+# Spread #
+##########
+
+Expands the data of an Interable. Right side of the =
+
+Arrays
+
+    Expanding an Array
+    const newArray = [ 1, 2, ...oldArray ];
+
+    Merging Arrays
+
+    const mergedArray = [ ...oldArray, ...newArray ];
+
+    Spread Array as parameter of a Function
+    function functionName( parameter1, parameter2 ){}; 
+    functionName( ...[ 1, 2 ] );
+    
+    Casts Nodelist to an Array
+    const arr = ...document.querySelectorAll( '.class' );
+
+Objects
+
+    Mergin Objects
+    const mergedObjName = { ...objName1, ...objName2, ...{ param: 'value' } }
+
+    Cloning an Object ( Doesn't work with nested Objects, for this use Loadash )
+    const copiedObject = { ...originalObject }; 
+
+Strings
+
+    Array of Letters
+    const letters = [ ...'Jona', 's', '.'];
+
+########
+# Rest #
+########
+
+Compress the data. It's always the last element in the strucure assignment. Left side of the =
+
+Examples: 
+
+    Gets the first 2 elements, the left ones goes into 'others' array
+    const [ a, b, ...others ] = [ 1, 2, 3, 4, 5 ]; //others = [ 3, 4, 5 ];
+
+    Rest with Spread and Destruction 
+    const[ var1, var2, ...others ] = [ ...obj.array1, ...obj.array2 ]
+
+    Rest as Functions Parameters, parameters array is optional, if you don't declare it you still
+    can use at by the implicit array variable 'arguments'
+    function functionName(name, age, ...parameters) {}
+
+#####################
+# Optional Chaining #
+#####################
+
+Checks if the Attribute or Method in the left exists (makes it optional). 
+Returns undefined instead of an Error if it does not exist.
+
+Examples: 
+
+    Optional attribute
+    let variableName = objectName.attributeName.propertyName? ?? ''; 
+
+    Optional Method
+    objectName.methodName?.(parameterName) ?? ''; 
+
+##########
+# Arrays #
+##########
+
+Arrays are a special type of objects, thats why Arrays properties as 'lenght'
+
+Main Methods:
+
+    arr1.concat( arr2 ) -> Concats arrays without mutating it
+    flat( level ) -> Flatens the array removing nested arrays inside it based on a deep level
+    fill( value, start, end ) -> fills an array with a value from given start and ends positions
+    includes -> Checks if an array has a given value
+    indexof -> Returns the index of a given value
+    join -> implodes an array based on a specified delimiter
+    pop -> Removes last element and returns it
+    push -> Adds an element
+    reverse -> Reverses the array MUTATING the original array
+    shift -> Removes the first element and returns it
+    slice( start, end ) -> Returns a new array with the extracted part ( end index is not included )
+    splice -> Work as slice but MUTATES the original array returning the extracted part
+    unshift -> adds an element in the beggining
+ 
+Examples:
+
+    Copies an Array
+    const copiedArray = originalArray.slice();
+
+    Same as Concat
+    const cocatedArray = [ ...arr1, ...arr2 ];
+
+    Creates an array with 7 empty positions and fills it with 1
+    const arr = new Array( 7 );
+    arr.fill( 1 );
+    
+    Removes an Index from an Array
+    arr.splice(index, 1);
+    
+    Converts FormData to Array
+    [ ...new FormData( formElement ) ]
+    
+    Converts Array to Object
+    Object.fromEntries( arr ) //Oposite of Object.entries()
+    
+Modern Loop Methods
+
+    Map
+        
+        Returns a new array containing the results of applying an operation on all original array elements
+        const newArr = arr.map( function( element, index, entireArray ){ return element * 2 } );
+        const newArr = arr.map( element => element * 2 ); 
+
+        flatMap() -> Same as Map but it flattens the result ( ONLY 1 level )
+
+    Filter
+
+        Returns an new array containing the array elements that passed a specified test bolleanCondition
+        const newArr = arr.filter( function( element, index, entireArray ) { return element > 0; } );
+        const newArr = arr.filter( element => element > 0; );
+
+    Reduce
+
+        Boils all array elements down to one single value, the acumulator stores the initial value of
+        the counter. If its only one sentence / expression the return is implicit.
+        const total = arr.reduce( 
+            function( acumulator, element, index, entireArray ){ acumulator + element } 
+        , 0);
+        const total = arr.reduce( (acumulator, element ) => acumulator + element , 0);
+        
+        Object as Acumulator, you always need to return the acumulator
+        const total = arr.reduce( (acumulator, element ) => {
+            cur > 0 ? acumulator.a += element : acumulator.b += element;
+            return acumulator;
+        }, { a: 0, b: 0 } );
+
+    Find
+
+        Returns the first element that satisfies a given condition
+        const foundelement = arr.find( 
+            ( element, index, entireArray ) => element.property === 'value' 
+        );
+
+    FindIndex
+
+        Returns the index of the first element that satisfies a given condition
+        const foundIndex = arr.findIndex( 
+            ( element, index, entireArray ) => element.property === 'value' 
+        );
+
+    Some
+
+        Returns a boolean checking if there is ANY element satisfies a given condition
+        const condition = arr.some( ( element, index, entireArray ) => element.property > 'value' );
+
+    Sort
+
+        Sorts an array based on a function ( alphabetically by default ). Sort MUTATES the array
+        In the Callback Function, if it returns zero or negative it switches the Values
+        const sortedArray = arr.sort( ( a, b ) => a > b ? -1 : 1);
+
+        Sort Ascending / Descending for Numbers
+        const sortedArray = arr.sort( ( a, b ) => a - b ); 
+        const sortedArray = arr.sort( ( a, b ) => b - a );
+
+    Every
+
+        Returns a boolean checking if ALL the elements satisfies a given condition
+        const condition = arr.every( ( element, index, entireArray ) => element.property > 'value' );
+
+    From
+
+        Creates and Fills an Array. When a Parameter is not used, use underscore
+        const arr = Array.from( { length: 7 }, () => 1 );
+        const arr = Array.from( { length: 3 }, ( _, i ) => i + 1 ); //[ 1, 2, 3 ];
+
+        Casts a NodeList to an Array removing any white space
+        const arr = Array.from( 
+            document.querySelectorAll( '.class' ), 
+            el => el.textContent.replace( ' ', '' ) 
+        );
+
+###########
+# Objects #
+###########
+
+Declaration
+
+    let objName = { 
+        param1: 'value1', 
+        'param2': 'value2', 
+        methodName: function( param ){} OR methodName( param ) {}
+    }
+
+Attributes
+
+    objName.param1 = 'value1';
+    objName[ '25param' ] = 'value2'; //for index with special characters
+
+    Variable name/value as Attribute key/value
+    var param1 = value1; 
+    let objName = { param1 };
+
+    //Variable value as Attribute key
+    var paramName = param2; 
+    let objName = { [ paramName ]: value2 } 
+
+
+Methods
+
+    let objName { 
+        methodName: function() {}
+        methodName() {} //ES6
+    }
+
+    objName.methodName( param );
+    objName[ 'methodName' ]( param ); //for index with special characters
+
+    //Object Class Methods -> Converts to Array
+    const objKeys = Object.keys( objName ); //Keys - [ key1, key2, key3 ]
+    const objValues = Object.values( objName ); //Values - [ value1, value2, value3 ]
+    const objEntries = Object.entries( objName ); //Entire Object - Oposite of Object.fromEntries() [ [ key1, value1 ], [ key2, value2 ] ]
+
+    
+Examples:
+
+    Merging using Object Class ( works with const variables )
+    var mergedObjName = Object.assign( {}, objName1, objName2 )
+
+    Merging using Spread ( works with const variables )
+    var mergedObjName = { ...objName1, ...objName2, ...{ param: 'value'} } 

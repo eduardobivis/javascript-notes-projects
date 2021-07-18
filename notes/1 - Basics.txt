@@ -1,0 +1,90 @@
+##########
+# Scopes #
+##########
+
+global -> variable can be accessed anywhere in the script, are available in any external script loaded after 
+function / block -> inside the function or block (curly braces) it was declared
+
+
+dynamic -> search in the functions that called the current function to find a value
+lexical -> search in the parent functions in to find a value (function inside another one)
+
+* JS does not have dynamic scope, but the 'this' kinda works like it
+
+* The Key Contrast Between Lexical and Dynamic Scoping: 
+Lexical scope is write-time, whereas dynamic scope is run-time. Lexical scope care where 
+a function was declared, but dynamic scope cares where a function was called from.
+
+#############
+# Variables #
+#############
+
+Undefined is the starting type / value of any variable.
+
+const:
+variable with a constant value, you CAN'T redeclare or change its value
+Block Scope
+* const array or objects indexes can be changed
+
+let:
+variable with a dinamic value, you CAN'T redeclare it 
+Block Scope
+
+var:
+variable with a dinamic value, you CAN redeclare or change its value
+Function Scope, doesn't matter if its declared inside a block.
+Creates a property in the global window object
+
+without cont, let or var:
+If a variable is declared without var, let or const it is global scoped
+
+Hoisting: Javascript sometimes reorder the code when compiled to avoid Reference Error (javascript can't 
+reference the variable). It works for functions and variables declared with var.
+
+#####################
+# Template Literals #
+#####################
+
+//Accepts variables and Multiple Lines
+console.log(`I am ${ year - birthYear } 
+years old`); 
+
+###############
+# Conversions #
+###############
+
+Number(), String(), Boolean() -> Conversors Available
+NaN -> Not a Number, wrong  conversion to Number ( Has type Number )
++ -> converts Number to String by type coercion, all the other operators do the opposite
+
+###################################################
+# Falsy and Nullage Values, Operators, Stric Mode #
+###################################################
+
+Falsy Values -> false, 0, null, '', undefined, NaN
+Nullish Values -> null, undefined
+?? -> Nullish Coalescing Operator, returns false if the it is a Nullish Value
+Example: const limit = spendingLimits?.[user] ?? 0;
+
+Expressions produce a value, Statements do not
+
+Strict Operator ( === ) -> the value and the type needs to be the same
+Loose Operator ( == ) -> only the value needs to be the same
+
+Strict Mode -> 'use strict', needs to be in the first line of the script. It helps showing the errors
+
+####################
+# Short-Circuiting #
+####################
+
+//Stops and returns the first TRUE operator. If both are true, the evaluation continues until the end and 
+takes the last one.
+Ex: let varName = value || 'defaultValue'; // Setting Default Value when Falsy
+
+//Stops and returns the first NOT NULLISH operator. If both are NULLISH, the evaluation continues until the 
+end and takes the last one.
+Ex: let varName = value ?? 'defaultValue'; // Setting Default Value when Nullish
+
+//Stops and returns the first FALSE operator. If both are false, the evaluation continues until the end and 
+takes the last one.
+Ex: objectName.methodName && object.methodName(); // If the method exists then run it!

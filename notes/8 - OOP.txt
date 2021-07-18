@@ -1,0 +1,213 @@
+##############
+# Prototypes #
+##############
+
+In Javascript, all Objects have a Prototype.
+The Prototypes contains methods that are acessible to all instances linked to it. 
+Objects are linked to the Prototype and delegate behaviour to them. 
+The flow goes from the object to the Prototype, the opposite of the 'Classical OOP'
+
+Person.prototype -> Will be linked to the created instances of the Class. 
+This is not the Prototype of the Class!
+
+Person.__proto__ -> The Prototype of the Object ( __proto__.__proto__ -> Prototype of the Prototype )
+
+Person.prototype.isPrototypeOf( object ) -> Check if its the prototype of a given instance
+
+Creating functions on a Core Prototye ( as Array.Prototype ) is a bad practice cause it can be 
+overwritten in a further version of JS and break your code. Also, in a team, developes may create 
+the same method with different names and it can produce a lot of bugs.
+
+Dom Prototype Chain
+
+    Object -> Node -> Element -> HTMLElement -> ... 
+
+#######################
+# Contructor Function #
+#######################
+
+Function that creates an Instance. Arrow Functions can't be Constructors because it has no 'this'.
+The 'new' creates a new Instance and then calls the function passing the Instance as 'this'. 
+The Instance is automatically returned by the function.
+
+Creating a Contructor Function
+
+    const Person = function( name, birthYear ) {
+
+        Attributes and Setter
+        this.name = name;
+        this.birthYear = birthYear;
+        
+        [ Never declare methods inside a constructor, it would repeat the function to any new instance ]
+    }
+
+Declaring an Attribute and a Method in the Prototype
+
+    Person.prototype.currentAge = 2021;
+    Person.prototype.calcAge = function() { return this.currentAge - this.birthYear; }
+
+Create an Instance of Person
+
+    const instancePerson = new Person( 'Jonas', '1991' );
+
+Checks if the Prototype has an specific attribute
+
+    Person.prototype.hasOwnProperty( 'birthYear' ); 
+
+##################  
+# Static Methods #
+##################
+
+Methods related to the Constructor Function of the Class and not to the Prototype. 
+They are simple functions in the contructor 'namespace' and are not replicated to the instances. 
+The 'this' inside it is the entire Contructor Function
+Examples: Array.from(), Number.parseFloat()
+
+Creating a Static Methods
+Person.printData = function ( data ) { console.log( data ) };
+Person.printData( 'Hello' ); 
+
+Will print an error cause its not replicated to the instance
+jonas.printData( 'Hello' ); 
+
+#############
+# ES6 Class #
+#############
+
+Classes are not hoisted, you need to use after the declaration, work as a type of Object and are always 
+executed in strict mode
+
+class Person {
+    
+    name, -> Public
+    #birthYear, -> Private
+    static currentYear = 2022, -> Static
+
+    Contructor Function
+    constructor( name, birthYear ){
+        this.#name = fullName;
+        this.#birthYear = birthYear;
+    }
+
+    Methods that will be added to the Prototype
+    #calcAge() { 
+        return this.#currentYear - this.#birthYear; 
+    } 
+    [ Private Method, transforms the method on an Attribute, removing it from the Prototype ]
+
+    Static Method
+    static printData( data ) { console.log( data ) }
+
+    Setters and Getters
+    set fullName( name ) { 
+        if( name.includes( ' ' ) ) this._fullName = names;
+        else alert( 'Full Name is Invalid !!! );
+    }
+    get fullName() { return this._fullName } 
+    
+    [ if a setter and the constructor sets the same property, an error of infinite loop happens ]
+
+}
+const jonas = new Person( 'Jonas', 1996 );
+jonas.fullName = 'Whatever Whatever'; -> Setter
+
+###################
+# Object.create() #
+###################
+
+Creates an object passing a prototype as parameter
+
+    const PersonProto = {
+
+        firstName,
+        birthYear,
+        
+        calcAge () { 
+            return this.currentAge - this.birthYear; 
+        },
+
+
+        Set attributes in the prototype
+        init ( firstName, birthYear ) {
+            this.firstName = firstName;
+            this.birthYear = birthYear;
+        }
+
+    };
+
+
+    let jonas = Object.create( PersonProto );
+    jonas.init( 'Jonas', 1996 );
+
+###############
+# Inheritance #
+###############
+
+Constructor Function
+
+    const Student = function( name, birthYear, course ) {
+        Person.call( this, name, birthYear )
+        this.course = course;
+    }
+
+    Linking Prototypes
+    Student.prototype = Object.create( Person.prototype );
+
+    Without that, Contructor will point to Person !
+    Student.prototype.constructor = Student; 
+
+    [ When updating the Person Prototype after linking, the changes are not replied to 
+      the Student Prototype ]
+
+ES6 Classes
+
+    class Student extends Person {
+        constructor( name, birthYear, course ) {
+
+            Needs to be called first, creates the 'this' of the subclass Student
+            super( name, birthYear ); 
+            this.course = course;
+
+        }
+    }
+
+    Empty Inheritance, 
+    class Student extends Person {}; 
+    const marta = new Student ( 'Marta', '1996' ); 
+
+    
+
+Object.create()
+
+    Creates an Object with the Person Prototype
+    const StudentProto = Object.create( PersonProto );
+
+    StudentProto.init = function ( firstName, birthYear, course ) {
+        Person.init.call( this, firstName, birthYear );
+        this.course = course;
+    }
+
+    //Creates an Object with the Studen Prototype
+    const jay = Object.create( StudentProto ); 
+
+####################
+# Chaining Methods #
+####################
+
+Return the Instance in the end of the Method
+
+class Counter = {
+    #counter = 0;
+
+    #increase () { 
+        this.#counter++;
+        return this 
+    }
+    #decrease () { 
+        this.#counter--;
+        return this;
+    }
+}
+
+class cnt = new Counter();
+cnt.#increase().#decrease();
